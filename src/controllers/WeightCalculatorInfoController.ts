@@ -12,7 +12,7 @@ async function getTargetDateCalculator(req: Request, res: Response): Promise<voi
   const user = await getUserById(req.session.authenticatedUser.userId);
   const weightLossInformation = user.weightLossProfile;
 
-  res.render("targetDateCalculator", { user, weightLossInformation });
+  res.render("targetDateCalculator.ejs", { user, weightLossInformation });
 }
 
 async function sendTargetDate(req: Request, res: Response): Promise<void>{
@@ -29,7 +29,7 @@ async function sendTargetDate(req: Request, res: Response): Promise<void>{
     user = await getUserById(req.session.authenticatedUser.userId);
     req.session.authenticatedUser.weightLossProfile = user.weightLossProfile;
   }
-  res.render("targetDateCalculator", {user, weightLossInformation});
+  res.render("targetDateCalculator.ejs", {user, weightLossInformation});
 }
 
 async function getCalorieCalculator(req: Request, res: Response): Promise<void>{
@@ -41,7 +41,7 @@ async function getCalorieCalculator(req: Request, res: Response): Promise<void>{
   const user = await getUserById(req.session.authenticatedUser.userId);
   const weightLossInformation = user.weightLossProfile;
 
-  res.render("calorieCalculator", { user, weightLossInformation });
+  res.render("calorieCalculator.ejs", { user, weightLossInformation });
 }
 
 async function sendCalorieCalculator(req: Request, res: Response): Promise<void>{
@@ -58,7 +58,7 @@ async function sendCalorieCalculator(req: Request, res: Response): Promise<void>
     user = await getUserById(req.session.authenticatedUser.userId);
     req.session.authenticatedUser.weightLossProfile = user.weightLossProfile;
   }
-  res.render("calorieCalculator", {user, weightLossInformation});
+  res.render("calorieCalculator.ejs", {user, weightLossInformation});
 }
 
 async function changeWeightLossProfile(req: Request, res: Response): Promise<void>{
