@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weight Wise | Target Date Calculator</title>
+</head>
+
+<body>
+    <h1 class="calculatorTitle">Target Date Calculator</h1>
+    <form method="POST" action="/calculators/target-date">
+        <div class="targetDateCalculator">
+            <div>
+                <label for="age">Age</label>
+                <input class="inputLeft" type="text" id="age" name="age" value="<%=weightLossInformation.age ?? ''%>" required>
+            </div>
+            <div>
+                <label for="sex">Sex</label>
+                <input type="text" id="sex" name="sex" value="<%=weightLossInformation.sex ?? ''%>" required>
+            </div>
+            <div>
+                <label for="height-feet">Height (Feet)</label>
+                <input class="inputLeft" type="text" id="height-feet" name="heightInFeet" value="<%=weightLossInformation.heightInFeet ?? ''%>" required>
+            <div>
+                <label for="height-inches">Height (Inches)</label>
+                <input type="text" id="height-inches" name="heightInInches" value="<%=weightLossInformation.heightInInches ?? ''%>" required>
+            </div>
+            <div>
+                <label for="current-weight">Current Weight (Pounds)</label>
+                <input class="inputLeft" type="text" id="current-weight" name="currentWeightInPounds" value="<%=weightLossInformation.currentWeightInPounds ?? ''%>" required>
+            <div>
+                <label for="target-weight">Target Weight (Pounds)</label>
+                <input type="text" id="target-weight" name="targetWeightInPounds" value="<%=weightLossInformation.targetWeightInPounds ?? ''%>" required>
+            </div>
+            <div>
+                <label for="calorie-intake">Calories Consumed Per Day</label>
+                <input class="inputLeft" type="text" id="calorie-intake" name="dailyCalorieIntake" value="<%=weightLossInformation.dailyCalorieIntake ?? ''%>" required>
+            </div>
+            <div>
+                <label for="activity-level">Activity Level</label>
+                <select name="activityLevel" id="activityLevel" required>
+                  <option value="sedentary">sedentary</option>
+                  <option value="light">light</option>
+                  <option value="moderate">moderate</option>
+                  <option value="heavy">heavy</option>
+                  <option value="extra heavy">extra heavy</option>
+                </select>
+            </div>
+            <div>
+                <label for="saveProfile">Save Results To Profile</label>
+                <input type="checkbox" id="saveProfile" name="saveProfile">
+            <button>Calculate Target Date</button>
+            </div>
+            <div>
+                <label for="target-date">Target Date</label>
+                <input type="text" id="target-date" name="targetDate" value="<%=weightLossInformation.targetDate ?? ''%>" readonly>
+            </div>
+        </div>
+        </form>
+</body>
+</html>

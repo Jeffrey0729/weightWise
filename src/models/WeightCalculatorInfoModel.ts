@@ -4,12 +4,14 @@ import { User } from '../entities/User';
 
 const weightLossProfileRepository = AppDataSource.getRepository(WeightLossProfile);
 
+// Create user profile for weight calculator
 async function createWeightLossProfile(user: User): Promise<void>{
   let newWeightLossProfile = new WeightLossProfile();
   newWeightLossProfile.user = user;
   newWeightLossProfile = await weightLossProfileRepository.save(newWeightLossProfile);
 }
 
+// Update user information
 async function updateWeightLossCalculatorInfo(user: User, weightLossInformation: WeightLossInformation): Promise<void>{
   weightLossInformation = convertWeightLossInformation(weightLossInformation);
   let { age, sex, heightInFeet, heightInInches, currentWeightInPounds, targetWeightInPounds, dailyCalorieIntake, activityLevel, targetDate } = weightLossInformation;
@@ -32,6 +34,7 @@ async function updateWeightLossCalculatorInfo(user: User, weightLossInformation:
 
 }
 
+// Get user profile using userId
 async function getWeightLossProfileByUserId(userId: string): Promise<WeightLossProfile | null>{
   const weightLossProfile = await weightLossProfileRepository
         .createQueryBuilder('weightLossProfile')
@@ -50,6 +53,7 @@ async function getWeightLossProfileByUserId(userId: string): Promise<WeightLossP
     return weightLossProfile;
 }
 
+// Turn information into string
 function convertWeightLossInformation(weightlossInformation: WeightLossInformation): WeightLossInformation{
   weightlossInformation.age = Number(weightlossInformation.age)
   weightlossInformation.heightInFeet = Number(weightlossInformation.heightInFeet)
@@ -60,65 +64,64 @@ function convertWeightLossInformation(weightlossInformation: WeightLossInformati
   return weightlossInformation;
 }
 
-// 1 pound = ~0.453592 Kg
+// Kilogram Conversion
 function convertPoundsToKilograms(pounds: number): number{
   return pounds * 0.453592;
 }
 
-// 1 kg = ~2.20462 pounds
+// Pound Conversion
 function convertKilogramsToPounds(kilograms: number): number{
   return kilograms * 2.20462;
 }
 
-// 1 inch = ~2.54 centimeters
+// Inch Conversion
 function convertInchesToCentimeters(feet: number, inches: number): number{
   const totalInches: number = feet * 12 + inches;
   return totalInches * 2.54;
 }
 
-// Calculates calories burned at rest
-// Based on the Mifflin-St Jeor Equation
+// Calculates calorie burn rate based on personal information
 function calculateBaseCalorieBurn(sex: string, age: number, heightInCentimeters: number, weightInKilograms: number): number{
-  const baseEquation = (10 * weightInKilograms) + (6.25 * heightInCentimeters) - (5 * age);
+  const calorieBurnEquation = (10 * weightInKilograms) + (6.25 * heightInCentimeters) - (5 * age);
   
   if (sex === "male"){
-    return baseEquation + 5;
+    return calorieBurnEquation + 5;
   }
   else{
-    return baseEquation - 161;
+    return calorieBurnEquation - 161;
   }
 }
 
-function calculateTotalCaloriesToBurn(targetWeightInPounds: number, currentWeightInPounds: number){
-  const poundsToLose = currentWeightInPounds - targetWeightInPounds;
-  return poundsToLose * 3500;
+// Calculator for calories needed to be burned to reach weight goal
+function calculateTotalCaloriesToBurn(targetWeight: number, currentWeight: number){
+  const poundLoss = currentWeight - targetWeight;
+  return poundLoss * 3500;
 }
 
+// 
 function getCaloriesBurnedByActivityLevel(activityLevel: string): number{
   if (activityLevel == "light"){
     return 1.375;
-  }
-  else if (activityLevel == "moderate"){
+  } else if (activityLevel == "moderate"){
     return 1.55;
-  }
-  else if (activityLevel == "heavy"){
+  } else if (activityLevel == "heavy"){
     return 1.725;
-  }
-  else if (activityLevel == "extra heavy"){
+  } else if (activityLevel == "extra heavy"){
     return 1.9;
-  }
-  else {
+  } else {
     return 1.2;
   }
 }
 
+// Day calculations to target day
 function calculateDaysUntilTargetDate(targetDate: Date){
   const differenceInMilliseconds = targetDate.getTime() - new Date().getTime();
   return differenceInMilliseconds / (1000*60*60*24);
 }
 
-function calculateTargetDate(weightLossInformation: WeightLossInformation): Date{
-  weightLossInformation = convertWeightLossInformation(weightLossInformation);
+// Get total days until weight goal is reached using recommended calorie intake
+function calculateTargetDate(weightLossUserInfo: WeightLossInformation): Date{
+  weightLossUserInfo = convertWeightLossInformation(weightLossUserInfo);
 
   let {
     age, 
@@ -129,7 +132,7 @@ function calculateTargetDate(weightLossInformation: WeightLossInformation): Date
     targetWeightInPounds, 
     dailyCalorieIntake, 
     activityLevel
-  } = weightLossInformation;
+  } = weightLossUserInfo;
 
   const baseCaloriesBurnedPerDay = calculateBaseCalorieBurn(sex, age, convertInchesToCentimeters(heightInFeet, heightInInches), convertPoundsToKilograms(currentWeightInPounds));
 
@@ -146,8 +149,12 @@ function calculateTargetDate(weightLossInformation: WeightLossInformation): Date
   return targetDate;
 }
 
-function calculateNecessaryCalorieIntake(weightLossInformation: WeightLossInformation): number{
-  weightLossInformation = convertWeightLossInformation(weightLossInformation);
+/* 
+Calculate recommened calorie intake based on user info and how many days they
+have set to lose the weight by
+*/
+function calculateCalorieIntake(weightLossUserInfo: WeightLossInformation): number{
+  weightLossUserInfo = convertWeightLossInformation(weightLossUserInfo);
 
   let {
     age, 
@@ -158,7 +165,7 @@ function calculateNecessaryCalorieIntake(weightLossInformation: WeightLossInform
     targetWeightInPounds, 
     targetDate, 
     activityLevel
-  } = weightLossInformation;
+  } = weightLossUserInfo;
 
   targetDate = new Date(targetDate)
 
@@ -168,8 +175,8 @@ function calculateNecessaryCalorieIntake(weightLossInformation: WeightLossInform
 
   const totalCaloriesBurnedPerDay = baseCaloriesBurnedPerDay * getCaloriesBurnedByActivityLevel(activityLevel);
 
-  return (totalCaloriesBurnedPerDay - calculateTotalCaloriesToBurn(targetWeightInPounds, currentWeightInPounds) / weightLossPeriodInDays);
+  return calculateTotalCaloriesToBurn(targetWeightInPounds, currentWeightInPounds) / weightLossPeriodInDays - totalCaloriesBurnedPerDay;
 
 }
 
-export { createWeightLossProfile, updateWeightLossCalculatorInfo, convertKilogramsToPounds, calculateTargetDate, calculateNecessaryCalorieIntake, getWeightLossProfileByUserId };
+export { createWeightLossProfile, updateWeightLossCalculatorInfo, convertKilogramsToPounds, calculateTargetDate, calculateCalorieIntake, getWeightLossProfileByUserId };

@@ -2,8 +2,6 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToOne, Relation, JoinColumn 
 import { EmailVerification } from './EmailVerification';
 import { WeightLossProfile } from './WeightCalculatorInfo';
 
-// This entity stores the minimum information required to create an account.
-
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
@@ -34,5 +32,4 @@ export class User {
   @OneToOne(() => EmailVerification, (emailVerification) => emailVerification.user, { cascade: ['insert', 'update'] })
   @JoinColumn()
   emailVerification: Relation<EmailVerification>;
-
 }

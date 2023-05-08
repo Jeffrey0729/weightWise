@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { calculateNecessaryCalorieIntake, calculateTargetDate, updateWeightLossCalculatorInfo } from '../models/WeightCalculatorInfoModel';
+import { calculateCalorieIntake, calculateTargetDate, updateWeightLossCalculatorInfo } from '../models/WeightCalculatorInfoModel';
 import { parseDatabaseError } from '../utils/db-utils';
 import { getUserById } from '../models/UserModel';
 
@@ -52,7 +52,7 @@ async function sendCalorieCalculator(req: Request, res: Response): Promise<void>
 
   let user = await getUserById(req.session.authenticatedUser.userId);
   const weightLossInformation = req.body as WeightLossInformation;
-  weightLossInformation.dailyCalorieIntake = calculateNecessaryCalorieIntake(weightLossInformation);
+  weightLossInformation.dailyCalorieIntake = calculateCalorieIntake(weightLossInformation);
   if (weightLossInformation.saveProfile){
     await updateWeightLossCalculatorInfo(user, weightLossInformation);
     user = await getUserById(req.session.authenticatedUser.userId);

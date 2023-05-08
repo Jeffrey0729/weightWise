@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeightWise | Profile</title>
+</head>
+
+<div class="navBar">
+    <span class="name">
+      <span>
+        <a class="websiteName" href="/">WeightWise</a>
+      </span>
+    </span>
+        <span class="register-login-container">
+            <span>
+              <a href="/" class="login-register-button" id="register-button">Home</a>
+            </span>
+            <span class="divider">
+              |
+            </span>
+            <span>
+              <a href="/api/logout" class="login-register-button" id="login-button">Log Out</a>
+  </div>
+
+<body>
+    <h1 class="username">
+        <%=user.username%>
+    </h1>
+    <hr />
+    <ul class="email">
+        <%=user.email%>
+        <li class="verifyEmail">
+        <% if (user.verifiedEmail) { %>
+            Verified!
+        <% } else {%>
+            <a href="/api/verifyEmail">
+                Verify Email
+            </a>
+        <% } %>
+        </li>
+        <li class="updateEmail">Update Email</li>
+    </ul>
+    <div class="imagePreviews">
+      <a href="/calculators/target-date"><img src="/assets/targetCalculatorPreview.png" width="500px" height="260px"/></a>
+      <a href="/calculators/calories"><img src="/assets/calorieCalculatorPreview.png" width="500px" height="260px"/></a>
+    </div>
+    <table>
+      <tr>
+        <td>Age</td>
+        <td><%=user.weightLossProfile.age%></td>
+      </tr>
+      <tr>
+        <td>Sex</td>
+        <td><%=user.weightLossProfile.sex%></td>
+      </tr>
+      <tr>
+        <td>Height</td>
+        <td><%=user.weightLossProfile.heightInFeet%>' <%=user.weightLossProfile.heightInInches%>"</td>
+      </tr>
+      <tr>
+        <td>Starting Weight</td>
+        <td><%=user.weightLossProfile.currentWeightInPounds%></td>
+      </tr>
+      <tr>
+        <td>Target Weight</td>
+        <td><%=user.weightLossProfile.targetWeightInPounds%></td>
+      </tr>
+      <tr>
+        <td>Daily Calorie Intake</td>
+        <td><%=user.weightLossProfile.dailyCalorieIntake%></td>
+      </tr>
+      <tr>
+        <td>Activity Level</td>
+        <td><%=user.weightLossProfile.activityLevel%></td>
+      </tr>
+      <tr>
+        <td>Target Date</td>
+        <td><%=user.weightLossProfile.targetDate%></td>
+      </tr>
+    </table>
+
+</body>
+
+</html>

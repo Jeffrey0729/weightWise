@@ -6,6 +6,10 @@ import path from 'path';
 import session from 'express-session';
 import connectSqlite3 from 'connect-sqlite3';
 import { logIn, logOut, registerUser } from './controllers/UserController';
+import { validateNewUserBody, validateLoginBody } from './validators/registerLogInValidator';
+import { validateCalorieBody, validateTargetDateBody } from './validators/calculatorValidator';
+import { getCalorieCalculator, getTargetDateCalculator, sendCalorieCalculator, sendTargetDate } from './controllers/WeightCalculatorInfoController';
+
 
 const app: Express = express();
 const { PORT, COOKIE_SECRET } = process.env;
@@ -37,10 +41,10 @@ app.get("/", (req, res) => {
 })
 
 app.get("/register", (req, res) => res.render("register"))
-app.post('/api/register', registerUser);
+app.post('/api/register', validateNewUserBody, registerUser);
 
 app.get("/login", (req, res) => res.render("login"))
-app.post('/api/login', logIn);
+app.post('/api/login', validateLoginBody, logIn);
 app.get('/api/logout/', logOut);
 
 // Takes to meals page
@@ -96,6 +100,12 @@ app.get('/coreWorkouts', (req, res) => {
   const filePath = path.resolve(directoryPath, 'public', 'coreWorkouts.html');
   res.sendFile(filePath);
 });
+
+app.get('/calculators/target-date', getTargetDateCalculator);
+app.post('/calculators/target-date', validateTargetDateBody, sendTargetDate);
+
+app.get('/calculators/calories', getCalorieCalculator);
+app.post('/calculators/calories', validateCalorieBody, sendCalorieCalculator);
 
 app.get("/user/profile", (req, res) => {
   if (!req.session.isLoggedIn) {

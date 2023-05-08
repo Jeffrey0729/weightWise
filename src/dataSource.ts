@@ -3,8 +3,6 @@ import { DataSource, EntitySchema } from 'typeorm';
 import glob from 'glob';
 import { promisify } from 'util';
 
-// This is a wonderfully hideous little hack to get dynamic entity module
-// loading working properly on Windows.
 async function loadEntities(): Promise<EntitySchema<unknown>[]> {
   const globPromise = promisify(glob);
   const globs = await globPromise('dist/entities/*.js');
