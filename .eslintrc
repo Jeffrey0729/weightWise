@@ -15,10 +15,8 @@
   ],
   "rules": {
     "@typescript-eslint/prefer-as-const": "error",
-    "@typescript-eslint/return-await": "off",
     "no-console": "off",
     "@typescript-eslint/explicit-function-return-type": "warn",
-    "prettier/prettier": "error",
     "no-restricted-syntax": [
       "error",
       {
@@ -33,9 +31,19 @@
     "@typescript-eslint/no-inferrable-types": "off",
     "import/prefer-default-export": "off",
     "import/no-cycle": "off",
-    "no-await-in-loop": "off"
+    "no-await-in-loop": "off",
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto",
+      }
+    ]
   },
   "parserOptions": {
     "project": "./tsconfig.json"
-  }
+  },
+  "indent": [
+    "error",
+    "tab"
+  ]
 }

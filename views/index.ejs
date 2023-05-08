@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>WeightWise | Home</title>
+</head>
+
+<div class="navBar">
+    <span class="logo">
+      <span>
+        <a href="/">
+          <img class="logo" src="./assets/logo/bookLogoPrimary.png">
+        </a>
+      </span>
+    </span>
+    <span class="name">
+      <span>
+        <a class="websiteName" href="/">WeightWise</a>
+      </span>
+    </span>
+    <% if (session.isLoggedIn) { %>
+        <span class="register-login-container">
+            <span>
+              <a href="/user/profile" class="login-register-button" id="register-button">Profile</a>
+            </span>
+            <span class="divider">
+              |
+            </span>
+            <span>
+              <a href="/api/logout" class="login-register-button" id="login-button">Log Out</a>
+            </span>
+            <span class="avatar">
+              <% if (session.authenticatedUser.avatar) { %>
+                <img src="<%=session.authenticatedUser.avatar.photoPath.replace('public', '')%>" height="54" width="54"/>
+              <% } else { %>
+                  <div><%= session.authenticatedUser.username.charAt(0) %></div>
+              <% } %>
+          </span>
+          <span>
+            <a href="/meals" class="login-register-button" id="meals-button">Meals</a>
+        </span>
+        <span class="divider">|</span>
+        <span>
+            <a href="/workouts" class="login-register-button" id="workouts-button">Workouts</a>
+        </span>
+          </span>
+    <% } else {%>
+        <span class="meals-workouts-register-login-container">
+            <span>
+              <a href="/register" class="login-register-button" id="register-button">Register</a>
+            </span>
+            <span class="divider">
+              |
+            </span>
+            <span>
+              <a href="/login" class="login-register-button" id="login-button">Log In</a>
+            </span>
+            <span class="divider">|</span>
+            <span>
+              <a href="/meals" class="login-register-button" id="meals-button">Meals</a>
+            </span>
+            <span class="divider">|</span>
+            <span>
+              <a href="/workouts" class="login-register-button" id="workouts-button">Workouts</a>
+            </span>
+          </span>
+    <% } %>
+  </div>
+
+<body>
+  <div class="welcome">
+    <% if (session.isLoggedIn){ %>
+      <h1>Welcome back to WeightWise! Choose a calculator below to update your weight-loss profile.</h1>
+    <% } else { %>
+      <h1>Welcome to WeightWise! Please <a href="/login">log in</a> or <a href="/login">register</a> an account to use our calculators and create a weight-loss profile.</h1>
+    <% } %>
+  </div>
+</body>
+
+</html>

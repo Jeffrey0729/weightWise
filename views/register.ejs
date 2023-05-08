@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css" />
+    <title>WeightWise | Register</title>
+</head>
+
+<div class="navBar">
+    <span class="logo">
+      <span>
+        <a href="/">
+          <img class="logo" src="./assets/logo/bookLogoPrimary.png">
+        </a>
+      </span>
+    </span>
+    <span class="name">
+      <span>
+        <a class="websiteName" href="/">WeightWise</a>
+      </span>
+    </span>
+    <span class="register-login-container">
+      <span>
+        <a href="/" class="login-register-button" id="register-button">Home</a>
+      </span>
+      <span class="divider">
+        |
+      </span>
+      <span>
+        <a href="/login" class="login-register-button" id="login-button">Log In</a>
+      </span>
+    </span>
+  </div>
+
+<body>
+    <h1 class="registerHeader">
+        Register
+    </h1>
+    <form method="POST" action="/api/register">
+        <div class="registration-form">
+            <div>
+                <label for="username">username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div>
+                <label for=" email">email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div>
+                <label for="password">password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button>Register</button>
+        </div>
+</body>
+
+</html>
